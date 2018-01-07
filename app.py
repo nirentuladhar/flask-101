@@ -24,9 +24,15 @@ mysql = MySQL(app)
 def index():
     return render_template("home.html")
 
+
+
+
 @app.route("/about")
 def about():
     return render_template("about.html")
+
+
+
 
 @app.route("/articles")
 def articles():
@@ -40,12 +46,18 @@ def articles():
         return render_template("articles.html", msg=msg)
     cur.close()
 
+
+
+
 @app.route("/article/<string:id>/")
 def article(id):
     cur = mysql.connection.cursor()
     result = cur.execute("select * from articles where id = %s", [id])
     article = cur.fetchone()
     return render_template("article.html", article=article)
+
+
+
 
 class RegisterForm(Form):
     name = StringField("Name", [validators.Length(min=1, max=50)])
@@ -56,6 +68,9 @@ class RegisterForm(Form):
         validators.EqualTo("confirm", message="Passwords do not match.")
     ])
     confirm = PasswordField("Confirm Password")
+
+
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -76,6 +91,9 @@ def register():
         flash("You are now registered and can log in", "success")
         return redirect(url_for("login"))
     return render_template("register.html", form=form)
+
+
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():    
@@ -106,6 +124,9 @@ def login():
             return render_template("login.html", error=error)
     return render_template("login.html")
     
+
+
+
 # check if user logged in
 def is_logged_in(f):
     @wraps(f)
@@ -118,12 +139,18 @@ def is_logged_in(f):
     return wrap
 
 
+
+
+
 @app.route("/logout")
 @is_logged_in
 def logout():
     session.clear()
     flash("You are now logged out", "success")
     return redirect(url_for("login"))
+
+
+
 
 
 @app.route("/dashboard")
@@ -139,9 +166,16 @@ def dashboard():
         return render_template("dashboard.html", msg)
     cur.close()
 
+
+
+
+
 class ArticleForm(Form):
     title = StringField("Title", [validators.Length(min=1, max=200)])
     body = TextAreaField("Body", [validators.Length(min=30)])
+
+
+
 
 
 @app.route("/add_article", methods=["GET", "POST"])
@@ -160,6 +194,49 @@ def add_article():
         flash("Article created", "success")
         return redirect(url_for("dashboard"))
     return render_template("add_article.html", form=form)
+
+
+
+@app.route("/edit_article/<string:id>", methods=["GET", "POST"])
+@is_logged_in
+def edit_article(id):
+    cur = mysql.connection.cursor()
+    result = cur.execute("select * from articles where id=%s", [id])
+    article = cur.fetchone()
+
+    form = ArticleForm(request.form)
+    form.title.data = article["title"]
+    form.body.data = article["body"]
+
+    if request.method == "POST" and form.validate():
+        title = request.form["title"]
+        body = request.form["body"]
+
+        cur = mysql.connection.cursor()
+        cur.execute("update articles set title=%s, body=%s where id=%s", (title, body, id))
+
+        mysql.connection.commit()
+        cur.close()
+
+        flash("Article Updated", "success")
+
+        return redirect(url_for("dashboard"))
+    return render_template("edit_article.html", form=form)
+
+
+@app.route("/delete_article/<string:id>", methods=["POST"])
+@is_logged_in
+def delete_article(id):
+    cur = mysql.connection.cursor()
+
+    result = cur.execute("delete from articles where id=%s", [id])
+
+    mysql.connection.commit()
+    cur.close()
+    flash("Article Deleted", "success")
+    return redirect(url_for("dashboard"))
+    
+
 
 if __name__ == "__main__":
     app.secret_key="secret123"

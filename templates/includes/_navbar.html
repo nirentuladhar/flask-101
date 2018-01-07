@@ -19,6 +19,9 @@
         <ul class="navbar-nav mt-2 mt-md-0">
             {% if session.logged_in %}
             <li class="nav-item">
+                <a class="nav-link" href="/dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/logout">Logout</a>
             </li>
             {% else %}
