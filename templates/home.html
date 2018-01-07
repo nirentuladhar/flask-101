@@ -4,6 +4,11 @@
 
 <div class="jumbotron text-center">
     <h1>Welcome</h1>
+    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorum corrupti obcaecati quos neque laudantium, commodi voluptatum, ipsa, modi possimus delectus inventore minima. In ut asperiores repudiandae, atque dolores tenetur nobis.</p>
+    {% if session.logged_in == NULL %}
+        <a href="/register" class="btn btn-secondary btn-lg">Register</a>
+        <a href="/login" class="btn btn-success btn-lg">Login</a>
+    {% endif %}
 </div>
 
 {% endblock %}
