@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12">
+        <div class="jumbotron">
+            <h1>Journals</h1>
+        </div>
+
+        <a class="btn btn-success" href="/add-journal">New Journal</a>
+        <hr>
+        <table class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Date Created</th>
+                <th>Last Modified</th>
+            </tr>
+            {% for journal in journals %}
+            <tr>
+                <td> <a href="/journals/{{journal.id}}">{{journal.name}} </a></td>
+                <td> {{journal.date_created}} </td>
+                <td> {{journal.date_modified}} </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+
+    </div>
+</div>
+    
+
+{% endblock %}

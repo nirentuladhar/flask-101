@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12">
+        <div class="jumbotron">
+            <h1>New Journal</h1>
+        </div>
+        {% from "includes/_formhelpers.html" import render_field  %}
+        <form method="POST">
+            <div class="form-group">
+                {{render_field(form.title, class_="form-control")}}
+            </div>
+            <button type="submit" class="btn btn-primary"> Create Journal</button>
+        </form>
+
+    </div>
+</div>
+    
+
+{% endblock %}

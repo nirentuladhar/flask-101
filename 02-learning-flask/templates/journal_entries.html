@@ -1,0 +1,93 @@
+{% extends "layout.html" %} {% block content %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Electronics</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-12">
+
+        <h1 style="margin-top: 32px;">Electronics</h1>
+        <hr>
+
+        <!-- <a class="btn btn-success" href="/add-journal">New Entry</a> -->
+    </div>
+</div>
+
+<ul class="nav nav-pills" id="myTab" role="tablist" style="margin-bottom: 32px">
+    <li class="nav-item">
+        <a class="nav-link active" id="entries-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Entries</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="hidden-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Hidden</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="deleted-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Deleted</a>
+    </li>
+    <li class="nav-item" style="margin-left:auto">
+        <a class="btn btn-success float-right" href="/add-journal">New Entry</a>
+        <!-- <a class="nav-link" id="deleted-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Deleted</a> -->
+    </li>
+</ul>
+
+
+
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="entries-tab">
+        <div class="row">
+            {% for version in versions %}
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{version.title}}</h5>
+                        <small class="text-muted">{{version.date_created}}</small>
+                        <p class="card-text">{{version.body}}</p>
+                        <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a href="#" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="hidden-tab">
+        <div class="row">
+            {% for hide in hidden %}
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{hide.title}}</h5>
+                        <small class="text-muted">{{hide.date_created}}</small>
+                        <p class="card-text">{{hide.body}}</p>
+                        <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a href="#" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="deleted-tab">
+        <div class="row">
+            {% for delete in deleted %}
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{delete.title}}</h5>
+                        <small class="text-muted">{{delete.date_created}}</small>
+                        <p class="card-text">{{delete.body}}</p>
+                        <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a href="#" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
